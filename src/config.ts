@@ -13,7 +13,7 @@ export const charactersUrl = `${baseUrl}characters/`;
 export const characters = [6519861, 6522112, 12655031, 6687771, 6521415];
 
 export const getJsonUrlForCharacter = (characterId: number) =>
-  `${baseUrl}/character/${characterId}/json`;
+  `${baseUrl}character/${characterId}/json`;
 
 export default {
   baseUrl,

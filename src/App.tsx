@@ -12,7 +12,7 @@ function App() {
       <CssBaseline />
       <Router>
         <Navigation />
-        <Container data-testid="base-app">
+        <Container maxWidth="xl" data-testid="base-app">
           <Route exact path="/" component={Home} />
           <Route path="/characters" component={Characters} />
         </Container>
