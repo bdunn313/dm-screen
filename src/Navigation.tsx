@@ -1,59 +1,57 @@
 import React from "react";
-import { AppBar, Toolbar, Container, Button } from "@material-ui/core";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import {
-  Link as RouterLink,
-  RouteComponentProps,
-  withRouter
-} from "react-router-dom";
+import { AppBar, Toolbar, Container, Typography, Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+
+import NavLink from "./NavLink";
+import { routes, PageRoute } from "./config";
 
 type Props = RouteComponentProps;
 
-const useStyles = makeStyles((theme: Theme) => ({
-  active: {
-    color: theme.palette.primary.contrastText
+const withStyles = makeStyles({
+  container: {
+    flexGrow: 1,
+    marginBottom: 20
   },
-  link: {
-    color: theme.palette.primary.light
+  pageTitle: {
+    flexGrow: 1
   }
-}));
+});
 
-function NavLink(props: {
-  to: string;
-  active: boolean;
-  children: React.ReactNode;
-}) {
-  const classes = useStyles();
-  const { to, active, children } = props;
-  const className = active ? classes.active : classes.link;
-  return (
-    <Button
-      color="inherit"
-      to={to}
-      component={RouterLink}
-      className={className}
-    >
-      {children}
-    </Button>
-  );
+export function getActivePage(
+  pathname: string,
+  routes: PageRoute[]
+): PageRoute {
+  const activePage = routes.find(route => pathname === route.pathname);
+  return activePage || { pathname: "/", title: "" };
 }
 
 function Navigation(props: Props) {
+  const classes = withStyles();
   const { pathname } = props.location;
-  const isActive = (route: string): boolean => pathname === route;
+  const activePage = getActivePage(pathname, routes);
   return (
-    <AppBar position="static">
-      <Toolbar variant="dense">
-        <Container>
-          <NavLink to="/" active={isActive("/")}>
-            Home
-          </NavLink>
-          <NavLink to="/characters" active={isActive("/characters")}>
-            Characters
-          </NavLink>
-        </Container>
-      </Toolbar>
-    </AppBar>
+    <Box className={classes.container}>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          <Typography variant="h6" component="h1" className={classes.pageTitle}>
+            {activePage.title}
+          </Typography>
+          <Box>
+            {routes.map(route => (
+              <NavLink
+                key={`route-${route.title}`}
+                to={route.pathname}
+                active={route.pathname === activePage.pathname}
+                testId={`navlink-${route.title}`}
+              >
+                {route.title}
+              </NavLink>
+            ))}
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
 
