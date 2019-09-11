@@ -1,0 +1,10 @@
+{
+  "name": "get-character-json",
+  "version": "1.0.0",
+  "main": "get-character-json.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "puppeteer": "^1.19.0"
+  }
+}
